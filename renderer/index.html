@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'none'">
+<style>
+  :root { --spring: cubic-bezier(.34, 1.45, .45, 1); --island-accent: #8b9cff; --hover-opacity: .5; --animation-scale: 1; --island-width: 440px; --island-bg: #000; --island-fg: #fff; --muted-fg: #8e8e96; --body-fg: #c7c7cc; }
+  body[data-theme="graphite"] { --island-bg: #252932; --island-fg: #f4f5f8; --muted-fg: #aab0bc; --body-fg: #d1d4dc; }
+  body[data-theme="arctic"] { --island-bg: #edf2f8; --island-fg: #18202d; --muted-fg: #586579; --body-fg: #3d4b61; }
+  body[data-theme="aurora"] { --island-bg: linear-gradient(115deg,#152b31,#28203a 55%,#172638); --island-fg: #fff; --muted-fg: #aeb8ca; --body-fg: #d0d6e3; }
+  body[data-theme="custom"] { --island-bg: #05060a; --island-fg: #fff; --muted-fg: #9ca4ba; --body-fg: #d1d5e0; }
+  body[data-theme="glass"] { --island-bg: rgba(16,19,27,.36); --island-fg: #fff; --muted-fg: rgba(255,255,255,.72); --body-fg: rgba(255,255,255,.88); }
+  body[data-ui-mode="light"]:not([data-theme="glass"]) { --island-bg: rgba(247,249,252,.97); --island-fg: #192333; --muted-fg: #718096; --body-fg: #46556b; }
+  body[data-ui-mode="light"][data-theme="graphite"] { --island-bg: #e6e9ef; --island-fg: #202a39; --muted-fg: #697589; --body-fg: #465267; }
+  body[data-ui-mode="light"][data-theme="aurora"] { --island-bg: linear-gradient(115deg,#e3edf0,#ece7f5 55%,#e1eaf4); --island-fg: #253345; --muted-fg: #65758a; --body-fg: #4c5d72; }
+  body[data-ui-mode="light"][data-theme="glass"] { --island-bg: rgba(246,249,255,.42); --island-fg: #17202d; --muted-fg: rgba(31,43,60,.72); --body-fg: rgba(31,43,60,.9); }
+  body[data-ui-mode="light"][data-theme="arctic"] { --island-bg: rgba(244,247,252,.96); --island-fg: #17202d; --muted-fg: #667286; --body-fg: #3c4b60; }
+  html, body { margin: 0; background: transparent; overflow: hidden; color: #fff;
+    font: 14px "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; -webkit-font-smoothing: antialiased; user-select: none; }
+  #stage { position: fixed; top: var(--top-offset, 10px); left: 0; right: 0; display: flex; justify-content: center; }
+  #island { position: relative; width: 110px; height: 30px; border-radius: 15px; background: var(--island-bg); color: var(--island-fg); overflow: hidden;
+    pointer-events: auto; transform-origin: top center;
+    box-shadow: 0 8px 30px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.07);
+    transition: width calc(.6s * var(--animation-scale, 1)) var(--spring), height calc(.6s * var(--animation-scale, 1)) var(--spring), border-radius calc(.6s * var(--animation-scale, 1)) var(--spring), opacity .35s ease, transform calc(.6s * var(--animation-scale, 1)) cubic-bezier(.22,.8,.2,1), background-color .25s ease, color .25s ease, box-shadow .25s ease, border-color .25s ease; }
+  #island.hovered { opacity: var(--hover-opacity, .5); }
+  #island.hidden { opacity: 0; transform: translateY(-130px) scale(.9); pointer-events: none; }
+  #island.open { width: var(--island-width, 440px); height: 92px; border-radius: 32px; cursor: grab; touch-action: none; }
+  #island.open.media { height: 116px; border-radius: 30px; }
+  #island.dragging { transition: none !important; cursor: grabbing; }
+  #island.swiping { transform: translateY(var(--swipe-y, 0px)); opacity: var(--swipe-opacity, 1); }
+  #island.swipe-dismiss {
+    transition: transform .22s ease-out, opacity .22s ease-out !important;
+    transform: translateY(-100px) scale(.96) !important; opacity: 0 !important;
+  }
+  .dot { position: absolute; right: 14px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%;
+    background: var(--muted-fg, #2a2a2e); animation: breathe 3.2s ease-in-out infinite; transition: opacity .25s; }
+  #island.open .dot { opacity: 0; }
+  @keyframes breathe { 50% { background: #3d3d44; box-shadow: 0 0 8px rgba(255,255,255,.12); } }
+  #content { position: absolute; inset: 0; display: flex; align-items: center; gap: 14px; padding: 0 22px; z-index: 2;
+    opacity: 0; filter: blur(8px); transform: scale(.94); transition: opacity .25s ease, filter .3s ease, transform .35s ease; }
+  #content.in { opacity: 1; filter: blur(0); transform: none; transition-delay: .16s; }
+  #avatar { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 20px; }
+  #text { min-width: 0; flex: 1; }
+  #app { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-fg, #8e8e96); }
+  #title { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #body { color: var(--body-fg, #c7c7cc); font-size: 13px; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  #media-controls { display: none; align-items: center; gap: 7px; margin-top: 7px; }
+  #island.media #media-controls { display: flex; }
+  #media-controls button { display: grid; place-items: center; width: 23px; height: 23px; border: 0; border-radius: 50%; color: var(--island-fg); background: rgba(255,255,255,.12); cursor: pointer; font-size: 12px; }
+  #media-controls button[data-media-action="playPause"] { background: var(--island-accent); color: #fff; }
+  #media-controls button:focus-visible { outline: 2px solid var(--island-accent); outline-offset: 2px; }
+  #island.media #avatar { border-radius: 13px; background-position: center; background-size: cover; }
+  #island.media #side { display: none; }
+  body[data-theme="glass"] #island {
+    background: var(--island-bg);
+    backdrop-filter: blur(24px) saturate(1.85) contrast(1.08);
+    -webkit-backdrop-filter: blur(24px) saturate(1.85) contrast(1.08);
+    border: 1px solid rgba(255,255,255,.3);
+    box-shadow: 0 15px 42px rgba(0,0,0,.2), inset 0 1.5px 1px rgba(255,255,255,.78), inset 0 -1px 1px rgba(255,255,255,.12), inset 0 0 0 1px rgba(18,27,45,.08);
+    isolation: isolate;
+  }
+  body[data-theme="glass"] #island::before {
+    content: ""; position: absolute; inset: -1px; z-index: 0; pointer-events: none; border-radius: inherit;
+    background: radial-gradient(ellipse 58% 86% at var(--glass-x, 28%) var(--glass-y, 12%), rgba(255,255,255,.72), transparent 43%),
+      radial-gradient(ellipse 76% 110% at var(--glass-x, 28%) var(--glass-y, 12%), rgba(104,157,255,.24), transparent 57%),
+      linear-gradient(145deg, rgba(255,255,255,.32), transparent 28%, rgba(255,255,255,.06) 52%, rgba(103,142,224,.2));
+    filter: url(#liquid-surface); mix-blend-mode: screen; opacity: .92; will-change: background;
+  }
+  body[data-theme="glass"] #island::after {
+    content: ""; position: absolute; inset: 1px; z-index: 1; pointer-events: none; border-radius: inherit;
+    border-top: 1px solid rgba(255,255,255,.62); border-left: 1px solid rgba(255,255,255,.2);
+    box-shadow: inset 0 1px 8px rgba(255,255,255,.2), inset 0 -7px 18px rgba(61,95,160,.12);
+  }
+  body[data-theme="glass"] #content { z-index: 2; }
+  body[data-ui-mode="light"][data-theme="glass"] #island::before { background: radial-gradient(ellipse 58% 86% at var(--glass-x, 28%) var(--glass-y, 12%), rgba(255,255,255,.96), transparent 43%), radial-gradient(ellipse 76% 110% at var(--glass-x, 28%) var(--glass-y, 12%), rgba(92,143,225,.20), transparent 57%), linear-gradient(145deg,rgba(255,255,255,.6),transparent 38%,rgba(106,142,194,.15)); mix-blend-mode: normal; }
+  body[data-ui-mode="light"][data-theme="glass"] #island::after { border-color: rgba(255,255,255,.86); box-shadow: inset 0 1px 9px rgba(255,255,255,.75), inset 0 -5px 16px rgba(76,104,150,.12); }
+  body[data-theme="glass"] #island .dot { background: currentColor; opacity: .68; }
+  body[data-ui-mode="light"] #island { box-shadow: 0 9px 28px rgba(28,42,62,.17), inset 0 0 0 1px rgba(20,35,55,.08); }
+  body[data-ui-mode="light"] #side svg circle:not(#ring) { stroke: #d4dbe5; }
+  body[data-ui-mode="light"] #media-controls button { background: rgba(26,40,60,.08); }
+  body[data-ui-mode="light"][data-theme="glass"] #island { box-shadow: 0 13px 38px rgba(28,42,62,.15), inset 0 1.5px 1px rgba(255,255,255,.94), inset 0 -1px 1px rgba(70,95,132,.14), inset 0 0 0 1px rgba(18,27,45,.06); }
+  #side { flex: none; position: relative; width: 24px; height: 24px; }
+  #side svg { transform: rotate(-90deg); }
+  #badge { position: absolute; inset: 0; display: grid; place-items: center; font-size: 10px; color: var(--muted-fg, #8e8e96); }
+  body[data-theme="arctic"] #island { box-shadow: 0 8px 30px rgba(24,32,45,.17), inset 0 0 0 1px rgba(0,0,0,.07); }
+  body[data-theme="arctic"] .dot { background: #b8c4d5; }
+  @media (prefers-reduced-motion: reduce) {
+    #island, #content { transition-duration: .01s !important; transition-delay: 0s !important; }
+    .dot { animation: none; }
+  }
+</style>
+</head>
+<body>
+<svg aria-hidden="true" width="0" height="0" style="position:absolute"><filter id="liquid-surface"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.028" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
+<div id="stage">
+  <div id="island">
+    <div class="dot"></div>
+    <div id="content">
+      <div id="avatar"></div>
+      <div id="text"><div id="app"></div><div id="title"></div><div id="body"></div><div id="media-controls"><button type="button" data-media-action="previous" aria-label="Previous track">‹</button><button type="button" data-media-action="playPause" aria-label="Play or pause">Ⅱ</button><button type="button" data-media-action="next" aria-label="Next track">›</button></div></div>
+      <div id="side">
+        <svg width="24" height="24" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" fill="none" stroke="#2a2a2e" stroke-width="2"/>
+          <circle id="ring" cx="12" cy="12" r="9" fill="none" stroke="var(--island-accent)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div id="badge"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="renderer.js"></script>
+</body>
+</html>

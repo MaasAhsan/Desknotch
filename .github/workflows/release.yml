@@ -1,0 +1,79 @@
+name: Windows release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Set publisher repository for auto-updates and validate tag
+        shell: pwsh
+        env:
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          node -e "const fs=require('fs');const p=require('./package.json');const tag=process.env.RELEASE_TAG.replace(/^v/,'');if(process.env.RELEASE_TAG.startsWith('v')&&tag!==p.version){throw new Error('Tag '+process.env.RELEASE_TAG+' does not match package version '+p.version)}p.build.publish.owner=process.env.GITHUB_REPOSITORY_OWNER;fs.writeFileSync('package.json',JSON.stringify(p,null,2)+'\\n')"
+
+      - name: Static checks
+        run: npm run check
+
+      - name: Tests
+        run: npm test
+
+      - name: Verify Windows signing certificate secret
+        shell: pwsh
+        env:
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:WIN_CSC_LINK)) {
+            throw 'Configure the WIN_CSC_LINK Actions secret with a PFX path or base64-encoded certificate before publishing signed Windows releases.'
+          }
+
+      - name: Build signed NSIS installer
+        env:
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+        run: npm run dist:win -- --publish never
+
+      - name: Generate SHA-256 checksums
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem dist -File | Where-Object { $_.Name -ne 'SHA256SUMS.txt' } | Sort-Object Name
+          $lines = foreach ($file in $files) {
+            $hash = Get-FileHash -Algorithm SHA256 -LiteralPath $file.FullName
+            "$($hash.Hash.ToLower())  $($file.Name)"
+          }
+          $lines | Set-Content -Encoding utf8 dist/SHA256SUMS.txt
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Desknotch-Windows-${{ github.ref_name }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: dist/*

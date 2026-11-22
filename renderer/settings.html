@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desknotch Settings</title>
+<link rel="stylesheet" href="settings.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand"><img class="brand-mark" src="../assets/icon.png" alt="Desknotch"><div><strong>Desknotch</strong><small>ULTIMATE EDITION</small></div></div>
+    <div class="sidebar-label">WORKSPACE</div>
+    <nav id="navigation">
+      <button class="nav-item active" data-nav="general"><span class="nav-icon">◈</span> General</button>
+      <button class="nav-item" data-nav="appearance"><span class="nav-icon">◐</span> Appearance</button>
+      <button class="nav-item" data-nav="notifications"><span class="nav-icon">♢</span> Notifications</button>
+      <button class="nav-item" data-nav="applications"><span class="nav-icon">▦</span> Applications</button>
+      <button class="nav-item" data-nav="focus"><span class="nav-icon">☾</span> Focus mode</button>
+      <button class="nav-item" data-nav="displays"><span class="nav-icon">▣</span> Displays</button>
+      <button class="nav-item" data-nav="history"><span class="nav-icon">◷</span> History</button>
+      <div class="sidebar-label integration-label">INTEGRATIONS</div>
+      <button class="nav-item" data-nav="media"><span class="nav-icon">♫</span> Now Playing</button>
+      <button class="nav-item" data-nav="clipboard"><span class="nav-icon">▤</span> Clipboard</button>
+      <button class="nav-item" data-nav="calendar"><span class="nav-icon">▦</span> Calendar</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-status"><span class="status-dot"></span><span>Desknotch is running</span></div>
+      <div class="version">VERSION 1.2.0 · PHASE 2</div>
+    </div>
+  </aside>
+
+  <main class="main-panel">
+    <header class="topbar"><div class="breadcrumb">DESKNOTCH <span>/</span> <strong id="page-name">General</strong></div><button class="icon-button" id="refresh" title="Refresh settings">↻</button></header>
+    <div class="page-scroll">
+      <div id="toast" class="toast" role="status"></div>
+
+      <section class="page active" data-page="general">
+        <div class="page-heading"><div><div class="eyebrow">YOUR DESKNOTCH</div><h1>General</h1><p>Make Desknotch feel at home on your desktop.</p></div><div class="heading-orb">◈</div></div>
+        <div class="hero-card"><div class="hero-copy"><div class="eyebrow">DESKTOP COMPANION</div><h2>Your desktop, reimagined.</h2><p>Notifications, quick interactions and a calmer workspace — all in one place.</p><div class="hero-pills"><span><i></i> Overlay active</span><span>Windows integration</span></div></div><div class="hero-island"><div class="hero-pill"><span></span><span></span><span></span></div><small>DESKNOTCH</small></div></div>
+        <div class="section-heading"><div><h2>Interface</h2><p>Choose how the Settings Center looks.</p></div></div>
+        <div class="mode-control" role="group" aria-label="Interface color mode">
+          <button type="button" data-ui-mode="system">System</button>
+          <button type="button" data-ui-mode="light">Light</button>
+          <button type="button" data-ui-mode="dark">Dark</button>
+        </div>
+        <div class="section-heading"><div><h2>Startup & behavior</h2><p>Choose how Desknotch lives alongside Windows.</p></div></div>
+        <div class="settings-card">
+          <div class="setting-row"><div class="setting-copy"><strong>Launch at login</strong><span>Start Desknotch automatically when you sign in to Windows.</span></div><label class="switch"><input id="launchAtLogin" type="checkbox"><span></span></label></div>
+          <div class="setting-row"><div class="setting-copy"><strong>Show idle pill</strong><span>Keep the compact island available when there are no active notifications.</span></div><label class="switch"><input id="idlePill" type="checkbox"><span></span></label></div>
+          <div class="setting-row"><div class="setting-copy"><strong>Enable notifications</strong><span>Allow incoming notifications to appear in Desknotch.</span></div><label class="switch"><input id="notificationsEnabled" type="checkbox"><span></span></label></div>
+          <div class="setting-row"><div class="setting-copy"><strong>Auto-hide delay</strong><span>How long Desknotch waits after the latest notification before sliding away. Set to zero to keep it visible.</span></div><div class="control-inline"><input id="autoHideSeconds" type="number" min="0" max="300" step="5"><span>seconds</span></div></div>
+        </div>
+        <div class="info-note"><span>✦</span><div><strong>Built to stay out of your way</strong><p>Desknotch remains click-through outside the pill, and the existing hover, swipe and notification animations are preserved.</p></div></div>
+      </section>
+
+      <section class="page" data-page="appearance">
+        <div class="page-heading"><div><div class="eyebrow">MAKE IT YOURS</div><h1>Appearance</h1><p>Fine-tune the island's personality.</p></div><div class="heading-orb">◐</div></div>
+        <div class="section-heading"><div><h2>Choose a theme</h2><p>Changes apply instantly to the overlay.</p></div></div>
+        <div class="theme-grid">
+          <button class="theme-card" data-theme="midnight"><span class="theme-preview midnight"><i></i></span><strong>Midnight</strong><small>Deep black · Default</small></button>
+          <button class="theme-card" data-theme="graphite"><span class="theme-preview graphite"><i></i></span><strong>Graphite</strong><small>Soft charcoal</small></button>
+          <button class="theme-card" data-theme="arctic"><span class="theme-preview arctic"><i></i></span><strong>Arctic</strong><small>Cool and light</small></button>
+          <button class="theme-card" data-theme="aurora"><span class="theme-preview aurora"><i></i></span><strong>Aurora</strong><small>Color-shift glow</small></button>
+          <button class="theme-card" data-theme="custom"><span class="theme-preview custom"><i></i></span><strong>Custom</strong><small>Your accent color</small></button>
+          <button class="theme-card" data-theme="glass"><span class="theme-preview glass"><i></i></span><strong>Glass</strong><small>Liquid glass · Refractive</small></button>
+        </div>
+        <div class="section-heading"><div><h2>Fine adjustments</h2><p>Set the details that make the island yours.</p></div></div>
+        <div class="settings-card">
+          <div class="setting-row"><div class="setting-copy"><strong>Accent color</strong><span>Used for notification progress and visual highlights.</span></div><input id="accentColor" class="color-input" type="color"></div>
+          <div class="setting-row slider-row"><div class="setting-copy"><strong>Hover transparency</strong><span>Opacity while your pointer is over the island.</span></div><div class="slider-control"><input id="hoverOpacity" type="range" min="0.2" max="1" step="0.05"><output id="hoverOpacityValue">50%</output></div></div>
+          <div class="setting-row slider-row"><div class="setting-copy"><strong>Animation speed</strong><span>Adjust the motion from subtle to expressive.</span></div><div class="slider-control"><input id="animationScale" type="range" min="0.25" max="2" step="0.05"><output id="animationScaleValue">100%</output></div></div>
+          <div class="setting-row slider-row"><div class="setting-copy"><strong>Expanded width</strong><span>Width of the expanded notification card.</span></div><div class="slider-control"><input id="islandWidth" type="range" min="360" max="500" step="10"><output id="islandWidthValue">440 px</output></div></div>
+        </div>
+      </section>
+
+      <section class="page" data-page="notifications">
+        <div class="page-heading"><div><div class="eyebrow">STAY IN CONTROL</div><h1>Notifications</h1><p>Choose what Desknotch remembers and how long it stays.</p></div><div class="heading-orb">♢</div></div>
+        <div class="settings-card">
+          <div class="setting-row"><div class="setting-copy"><strong>Save notification history</strong><span>Keep a searchable local record, including notifications filtered by Focus or app rules.</span></div><label class="switch"><input id="storeHistory" type="checkbox"><span></span></label></div>
+          <div class="setting-row"><div class="setting-copy"><strong>History retention</strong><span>Automatically delete older entries from Desknotch's local history.</span></div><div class="control-inline"><input id="retentionDays" type="number" min="1" max="365"><span>days</span></div></div>
+          <div class="setting-row"><div class="setting-copy"><strong>Default card duration</strong><span>How long a notification stays expanded before it collapses.</span></div><div class="control-inline"><input id="defaultDurationSeconds" type="number" min="3" max="30"><span>seconds</span></div></div>
+        </div>
+        <div class="info-note warning"><span>⌁</span><div><strong>Keep private data private</strong><p>Notification titles and message previews are stored locally when history is enabled. They are not uploaded by Desknotch. You can clear the history at any time.</p></div></div>
+      </section>
+
+      <section class="page" data-page="applications">
+        <div class="page-heading"><div><div class="eyebrow">YOUR APPS, YOUR RULES</div><h1>Applications</h1><p>Choose which applications can interrupt you.</p></div><div class="heading-orb">▦</div></div>
+        <div class="search-box"><span>⌕</span><input id="appSearch" type="search" placeholder="Search detected applications..."></div>
+        <div id="app-list" class="list-card"><div class="empty-state">Applications will appear here after Desknotch detects notifications.</div></div>
+        <div class="info-note"><span>✦</span><div><strong>Priority notifications</strong><p>Mark an app as priority to let its notifications through Focus Mode when priority bypass is enabled.</p></div></div>
+      </section>
+
+      <section class="page" data-page="focus">
+        <div class="page-heading"><div><div class="eyebrow">PROTECT YOUR ATTENTION</div><h1>Focus mode</h1><p>Keep interruptions low when you need to concentrate.</p></div><div class="heading-orb">☾</div></div>
+        <div class="focus-hero"><div><div class="eyebrow">QUIET THE NOISE</div><h2>Make room for focus.</h2><p>Muted notifications are still eligible for local history when history is enabled.</p></div><label class="switch large"><input id="focusEnabled" type="checkbox"><span></span></label></div>
+        <div class="settings-card">
+          <div class="setting-row"><div class="setting-copy"><strong>Allow priority apps</strong><span>Priority apps can still appear while Focus Mode is active.</span></div><label class="switch"><input id="allowPriority" type="checkbox"><span></span></label></div>
+          <div class="setting-row"><div class="setting-copy"><strong>Schedule Focus Mode</strong><span>Automatically activate during your quiet hours.</span></div><label class="switch"><input id="scheduleEnabled" type="checkbox"><span></span></label></div>
+          <div class="setting-row"><div class="setting-copy"><strong>Start time</strong><span>Local time on this computer.</span></div><input id="scheduleStart" class="time-input" type="time"></div>
+          <div class="setting-row"><div class="setting-copy"><strong>End time</strong><span>Schedules can cross midnight (for example, 22:00–07:00).</span></div><input id="scheduleEnd" class="time-input" type="time"></div>
+        </div>
+      </section>
+
+      <section class="page" data-page="displays">
+        <div class="page-heading"><div><div class="eyebrow">YOUR DESKTOP SETUP</div><h1>Displays</h1><p>Choose where Desknotch lives when multiple monitors are connected.</p></div><div class="heading-orb">▣</div></div>
+        <div class="settings-card">
+          <div class="setting-row"><div class="setting-copy"><strong>Display</strong><span>Select the screen where Desknotch should appear.</span></div><select id="displayId" class="select-input"></select></div>
+          <div class="setting-row slider-row"><div class="setting-copy"><strong>Horizontal offset</strong><span>Fine-tune the horizontal position from center.</span></div><div class="slider-control"><input id="horizontalOffset" type="range" min="-500" max="500" step="10"><output id="horizontalOffsetValue">0 px</output></div></div>
+          <div class="setting-row slider-row"><div class="setting-copy"><strong>Top offset</strong><span>Distance from the top edge of the selected display.</span></div><div class="slider-control"><input id="topOffset" type="range" min="0" max="200" step="2"><output id="topOffsetValue">10 px</output></div></div>
+        </div>
+        <div class="info-note"><span>▣</span><div><strong>Display-aware positioning</strong><p>Desknotch follows display changes and falls back to your primary monitor if the selected display is disconnected.</p></div></div>
+      </section>
+
+      <section class="page" data-page="history">
+        <div class="page-heading"><div><div class="eyebrow">YOUR RECENT ACTIVITY</div><h1>Notification history</h1><p>Search and revisit notifications stored on this device.</p></div><div class="heading-orb">◷</div></div>
+        <div class="history-toolbar"><div class="search-box"><span>⌕</span><input id="historySearch" type="search" placeholder="Search apps or message text..."></div><button id="clearHistory" class="secondary-button">Clear history</button></div>
+        <div id="history-list" class="history-list"><div class="empty-state">No notifications saved yet.</div></div>
+        <div class="history-footer" id="history-footer"></div>
+      </section>
+
+      <section class="page" data-page="media">
+        <div class="page-heading"><div><div class="eyebrow">YOUR SOUND, AT A GLANCE</div><h1>Now Playing</h1><p>Control the active Windows media session from Desknotch.</p></div></div>
+        <div class="settings-card integration-card">
+          <div class="setting-row"><div class="setting-copy"><strong>Enable media integration</strong><span>Read the active Windows media session and expose playback controls.</span></div><label class="switch"><input id="mediaEnabled" type="checkbox"><span></span></label></div>
+          <div class="setting-row"><div class="setting-copy"><strong>Show track changes in Desknotch</strong><span>Briefly show a Now Playing card when the track changes.</span></div><label class="switch"><input id="mediaShowOnIsland" type="checkbox"><span></span></label></div>
+        </div>
+        <article class="media-card" id="media-card">
+          <div class="media-art" id="media-art">♫</div>
+          <div class="media-meta"><strong id="media-title">No active media session</strong><span id="media-artist">Start playing music in a supported Windows app.</span><small id="media-app">Windows media sessions</small></div>
+          <div class="media-actions"><button id="media-previous" type="button" aria-label="Previous track">‹</button><button id="media-toggle" type="button" aria-label="Play or pause">▶</button><button id="media-next" type="button" aria-label="Next track">›</button></div>
+        </article>
+        <p class="integration-status" id="media-status">Media integration is disabled.</p>
+        <div class="info-note"><span>i</span><div><strong>Windows integration requirement</strong><p>The native media bridge is optional and must be built on Windows. Windows requires package identity with the globalMediaControl capability; the standard NSIS installer does not declare it. Use the AppX/MSIX build for media control.</p></div></div>
+      </section>
+
+      <section class="page" data-page="clipboard">
+        <div class="page-heading"><div><div class="eyebrow">YOUR RECENT COPIES</div><h1>Clipboard</h1><p>Keep a private, local history of copied text.</p></div></div>
+        <div class="settings-card">
+          <div class="setting-row"><div class="setting-copy"><strong>Enable clipboard history</strong><span>Opt in to monitor copied text. Monitoring is off by default.</span></div><label class="switch"><input id="clipboardEnabled" type="checkbox"><span></span></label></div>
+          <div class="setting-row"><div class="setting-copy"><strong>Show copies in Desknotch</strong><span>Display a short preview when new text is copied.</span></div><label class="switch"><input id="clipboardShowOnIsland" type="checkbox"><span></span></label></div>
+          <div class="setting-row"><div class="setting-copy"><strong>History retention</strong><span>Delete clipboard items older than this.</span></div><div class="control-inline"><input id="clipboardRetentionDays" type="number" min="1" max="90"><span>days</span></div></div>
+          <div class="setting-row"><div class="setting-copy"><strong>Maximum items</strong><span>Keep the most recent entries only.</span></div><div class="control-inline"><input id="clipboardMaxItems" type="number" min="20" max="1000" step="20"><span>items</span></div></div>
+        </div>
+        <div class="section-heading history-toolbar"><div><h2>Recent clipboard</h2><p>Stored only on this device.</p></div><button id="clearClipboard" class="secondary-button" type="button">Clear all</button></div>
+        <div id="clipboard-list" class="history-list"><div class="empty-state">Enable clipboard history to begin.</div></div>
+        <div class="history-footer" id="clipboard-footer">Clipboard monitoring is off.</div>
+      </section>
+
+      <section class="page" data-page="calendar">
+        <div class="page-heading"><div><div class="eyebrow">WHAT'S NEXT</div><h1>Calendar</h1><p>Add a private, read-only iCalendar feed for upcoming events and reminders.</p></div></div>
+        <div class="settings-card">
+          <div class="setting-row"><div class="setting-copy"><strong>Event reminders</strong><span>Show a Desknotch notification shortly before an event begins.</span></div><label class="switch"><input id="calendarRemindersEnabled" type="checkbox"><span></span></label></div>
+          <div class="setting-row"><div class="setting-copy"><strong>Reminder lead time</strong><span>How early to notify you.</span></div><div class="control-inline"><input id="calendarReminderMinutes" type="number" min="1" max="120"><span>minutes</span></div></div>
+          <div class="setting-row"><div class="setting-copy"><strong>Feed refresh</strong><span>How often Desknotch checks subscribed calendars.</span></div><div class="control-inline"><input id="calendarRefreshMinutes" type="number" min="5" max="120"><span>minutes</span></div></div>
+        </div>
+        <div class="section-heading"><div><h2>Add a calendar feed</h2><p>Use a private HTTPS iCalendar (.ics) subscription URL. Treat the link like a password.</p></div></div>
+        <div class="feed-form"><input id="calendar-url" type="url" placeholder="https://calendar.example.com/private.ics" autocomplete="off"><button id="calendar-add" class="primary-button" type="button">Add feed</button></div>
+        <div class="section-heading"><div><h2>Your calendars</h2><p>Feed links are stored locally in Desknotch's private app data.</p></div><button id="calendar-refresh" class="secondary-button" type="button">Refresh</button></div>
+        <div id="calendar-sources" class="list-card"><div class="empty-state">No calendars added.</div></div>
+        <div class="section-heading"><div><h2>Upcoming events</h2><p>Events for the next 14 days.</p></div></div>
+        <div id="calendar-events" class="history-list"><div class="empty-state">No upcoming events found.</div></div>
+        <p class="integration-status" id="calendar-status">Add an iCalendar feed to get started.</p>
+      </section>
+
+      <footer class="footer"><span>DESKNOTCH · ULTIMATE DESKTOP COMPANION</span><span>Settings are saved automatically</span></footer>
+    </div>
+  </main>
+</div>
+<script src="settings.js"></script>
+</body>
+</html>

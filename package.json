@@ -1,0 +1,91 @@
+{
+  "name": "desknotch",
+  "version": "1.3.0",
+  "description": "A refined Windows desktop companion for notifications, media, clipboard, calendar and quick interactions.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/parse.test.js && node test/core.test.js && node test/phase2.test.js && node test/release.test.js",
+    "check": "node --check main.js && node --check src/core/userDataMigration.js && node --check src/core/rotatingLogger.js && node --check preload.js && node --check src/winNotifications.js && node --check src/core/settingsStore.js && node --check src/core/historyStore.js && node --check src/core/notificationPolicy.js && node --check src/core/clipboardStore.js && node --check src/core/calendarStore.js && node --check src/core/icsParser.js && node --check src/integrations/clipboard/clipboardWatcher.js && node --check src/integrations/calendar/calendarManager.js && node --check src/integrations/media/mediaManager.js && node --check renderer/renderer.js && node --check renderer/settings.js && node --check scripts/injectGlobalMediaCapability.js",
+    "build:media-bridge": "dotnet publish windows-bridge/media-bridge/Desknotch.MediaBridge.csproj -c Release -r win-x64 --self-contained true -p:AssemblyName=Desknotch.MediaBridge -o resources/media-bridge",
+    "dist": "electron-builder --win nsis",
+    "dist:msix": "npm run build:media-bridge && electron-builder --win appx",
+    "dist:win": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "com.desknotch.desktop",
+    "productName": "Desknotch",
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**",
+      "renderer/**",
+      "assets/**"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/media-bridge",
+        "to": "media-bridge",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico",
+      "executableName": "Desknotch",
+      "verifyUpdateCodeSignature": true
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "deleteAppDataOnUninstall": false
+    },
+    "appx": {
+      "identityName": "DesknotchDesktopCompanion",
+      "applicationId": "Desknotch",
+      "publisher": "CN=Desknotch",
+      "publisherDisplayName": "Desknotch",
+      "capabilities": [
+        "runFullTrust",
+        "internetClient"
+      ],
+      "backgroundColor": "#101114",
+      "minVersion": "10.0.19041.0",
+      "maxVersionTested": "10.0.26100.0",
+      "showNameOnTiles": false
+    },
+    "appxManifestCreated": "scripts/injectGlobalMediaCapability.js",
+    "artifactName": "Desknotch-${version}-${arch}.${ext}",
+    "publish": {
+      "provider": "github",
+      "owner": "YOUR_GITHUB_USERNAME",
+      "repo": "desknotch",
+      "releaseType": "release"
+    }
+  },
+  "author": "Desknotch contributors",
+  "dependencies": {
+    "electron-updater": "^6.8.11"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "windows",
+    "electron",
+    "notifications",
+    "desktop-companion",
+    "dynamic-island",
+    "media-controls",
+    "clipboard",
+    "calendar"
+  ]
+}
